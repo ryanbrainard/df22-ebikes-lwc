@@ -24,6 +24,7 @@ import FRONT_BRAKES_FIELD from '@salesforce/schema/Product__c.Front_Brakes__c';
 import REAR_BRAKES_FIELD from '@salesforce/schema/Product__c.Rear_Brakes__c';
 import SKU_FIELD from '@salesforce/schema/Product__c.SKU__c';
 import COLOR_FIELD from '@salesforce/schema/Product__c.Color__c';
+import ADJUSTABLE_FIELD from '@salesforce/schema/Product__c.Adjustable__c';
 
 /**
  * Component to display details of a Product__c.
@@ -42,6 +43,7 @@ export default class ProductCard extends NavigationMixin(LightningElement) {
     rearBrakesField = REAR_BRAKES_FIELD;
     skuField = SKU_FIELD;
     colorField = COLOR_FIELD;
+    adjustableField = ADJUSTABLE_FIELD;
 
     // Id of Product__c to display
     recordId;
