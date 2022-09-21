@@ -1,68 +1,58 @@
 @isTest
 public class TestProductController {
-    private static final String PRODUCT_NAME1 = 'Sample Bike 1';
-    private static final String PRODUCT_NAME2 = 'Sample Bike 2';
-
     @testSetup
     static void createProducts() {
-        Product_Family__c family = new Product_Family__c(
-            Name = 'TestFamily',
-            Category__c = 'Mountain'
-        );
-        insert family;
+        List<Product__c> products = new List<Product__c>();
 
-        insert new List<Product__c>{
+        products.add(
             new Product__c(
-                Name = PRODUCT_NAME1,
+                Name = 'Sample Bike 1',
                 MSRP__c = 1000,
                 Category__c = 'Mountain',
                 Level__c = 'Beginner',
-                Material__c = 'Carbon',
-                Product_Family__c = family.Id
-            ),
+                Material__c = 'Carbon'
+            )
+        );
+
+        products.add(
             new Product__c(
-                Name = PRODUCT_NAME2,
+                Name = 'Sample Bike 2',
                 MSRP__c = 1200,
                 Category__c = 'Mountain',
-                Level__c = 'Racer',
-                Material__c = 'Carbon',
-                Product_Family__c = family.Id
+                Level__c = 'Beginner',
+                Material__c = 'Carbon'
             )
-        };
+        );
+
+        insert products;
     }
 
     @isTest
-    static void getProducts_works() {
+    static void testGetProducts() {
         ProductController.Filters filters = new ProductController.Filters();
         filters.searchKey = 'Sample';
         filters.maxPrice = 2000;
         filters.categories = new List<String>{ 'Mountain' };
         filters.levels = new List<String>{ 'Beginner' };
         filters.materials = new List<String>{ 'Carbon' };
-
         PagedResult result = ProductController.getProducts(filters, 1);
-
-        System.assertEquals(1, result.records.size());
-        System.assertEquals(
-            PRODUCT_NAME1,
-            ((Product__c) result.records[0]).Name
-        );
+        System.assertEquals(result.records.size(), 2);
     }
 
     @isTest
-    static void getSimilarProducts_works() {
-        Product__c baseProduct = [
-            SELECT Id, Name, Product_Family__c
-            FROM Product__c
-            WHERE Name = :PRODUCT_NAME1
-        ];
-
-        Product__c[] similarProducts = ProductController.getSimilarProducts(
-            baseProduct.Id,
-            baseProduct.Product_Family__c
+    static void testGetSimilarProducts() {
+        ProductController.Filters filters = new ProductController.Filters();
+        filters.searchKey = 'Sample';
+        filters.maxPrice = 2000;
+        filters.categories = new List<String>{ 'Mountain' };
+        filters.levels = new List<String>{ 'Beginner' };
+        filters.materials = new List<String>{ 'Carbon' };
+        PagedResult result = ProductController.getProducts(filters, 1);
+        Product__c productToCompare = (Product__c) result.records[0];
+        Product__c[] products = ProductController.getSimilarProducts(
+            productToCompare.Id,
+            null
         );
-
-        System.assertEquals(1, similarProducts.size());
-        System.assertEquals(PRODUCT_NAME2, similarProducts[0].Name);
+        System.assertEquals(products.size(), 1);
     }
 }
