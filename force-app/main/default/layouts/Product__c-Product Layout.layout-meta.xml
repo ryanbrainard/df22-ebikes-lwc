@@ -51,6 +51,10 @@
                 <behavior>Edit</behavior>
                 <field>Color__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Adjustable__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
