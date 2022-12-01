@@ -62,7 +62,7 @@
         "salesforce-pageobjects": "^2.0.1",
         "utam": "^1.1.2",
         "wdio-chromedriver-service": "^7.3.2",
-        "wdio-utam-service": "^1.1.2"
+        "wdio-utam-service": "^1.2.1"
     },
     "workspaces": [
         "./"
